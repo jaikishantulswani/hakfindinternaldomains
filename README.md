@@ -1,4 +1,4 @@
-**(modified purposly to get only the ips which are not internal)**
+**(modified purposely to get only the ips which are not internal)**
 
 Original project of hakluke at https://github.com/hakluke/hakfindinternaldomains
 
