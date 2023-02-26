@@ -57,19 +57,24 @@ func main() {
 }
 
 func doWork(work chan string, wg *sync.WaitGroup, cidrs []net.IPNet) {
-	defer wg.Done()
-	for text := range work {
-		ip, err := net.LookupIP(text)
-		if err != nil {
-			log.Println("DNS resolve failed:", err)
-		}
-		for _, cidr := range cidrs {
-			if len(ip) == 0 {
-				continue
-			}
-			if cidr.Contains(ip[0]) {
-				fmt.Println(text, ip)
-			}
-		}
-	}
+    defer wg.Done()
+    for text := range work {
+        ip, err := net.LookupIP(text)
+        if err != nil {
+            log.Println("DNS resolve failed:", err)
+        }
+        if len(ip) == 0 {
+            continue
+        }
+        found := false
+        for _, cidr := range cidrs {
+            if cidr.Contains(ip[0]) {
+                found = true
+                break
+            }
+        }
+        if !found {
+            fmt.Println(text, ip)
+        }
+    }
 }
